@@ -145,6 +145,8 @@ public:
   bool drop_checks() const;
   bool must_capture() const;
   bool has_capture() const;
+  bool must_check() const;
+  bool has_check() const;
   bool must_drop() const;
   bool piece_drops() const;
   bool drop_loop() const;
@@ -516,6 +518,11 @@ inline bool Position::must_capture() const {
   return var->mustCapture;
 }
 
+inline bool Position::must_check() const {
+  assert(var != nullptr);
+  return var->mustCheck;
+}
+
 inline bool Position::has_capture() const {
   // Check for cached value
   if (st->legalCapture != NO_VALUE)
@@ -539,6 +546,30 @@ inline bool Position::has_capture() const {
           }
   }
   st->legalCapture = VALUE_FALSE;
+  return false;
+}
+
+inline bool Position::has_check() const {
+  // TODO: iterate over all checks and see if they are legal.
+  if(this->checkers()){
+    for (const auto& mchck : MoveList<EVASIONS>(*this))
+      if (gives_check(mchck) && legal(mchck))
+        return true;
+  }
+  else{
+    for (const auto& mchck : MoveList<QUIET_CHECKS>(*this))
+      if (gives_check(mchck) && legal(mchck))
+        return true;
+    
+    for (const auto& mchck : MoveList<CAPTURES>(*this))
+      if (gives_check(mchck) && legal(mchck))
+        return true;
+
+    for (const auto& mchck : MoveList<NON_EVASIONS>(*this))
+      if (gives_check(mchck) && legal(mchck))
+        return true;
+  }
+  
   return false;
 }
 

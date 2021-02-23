@@ -691,6 +691,13 @@ namespace {
         v->flyingGeneral = true;
         return v;
     }
+
+    Variant* blunzinger_variant() {
+        Variant* v = fairy_variant_base();
+        v->endgameEval = true;
+        v->mustCheck = true;
+        return v;
+    }
 #ifdef LARGEBOARDS
     Variant* shogi_variant() {
         Variant* v = minishogi_variant_base();
@@ -1055,6 +1062,7 @@ void VariantMap::init() {
     add("breakthrough", breakthrough_variant()->conclude());
     add("ataxx", ataxx_variant()->conclude());
     add("minixiangqi", minixiangqi_variant()->conclude());
+    add("blunzinger", blunzinger_variant()->conclude());
 #ifdef LARGEBOARDS
     add("shogi", shogi_variant()->conclude());
     add("capablanca", capablanca_variant()->conclude());

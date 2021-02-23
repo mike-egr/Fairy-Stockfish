@@ -890,6 +890,10 @@ bool Position::legal(Move m) const {
   if ((!checking_permitted() || (sittuyin_promotion() && type_of(m) == PROMOTION) || (!drop_checks() && type_of(m) == DROP)) && gives_check(m))
       return false;
 
+
+  if (must_check() && !gives_check(m) && has_check())
+      return false;
+
   // Illegal quiet moves
   if (must_capture() && !capture(m) && has_capture())
       return false;

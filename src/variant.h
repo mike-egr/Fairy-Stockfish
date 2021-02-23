@@ -72,6 +72,7 @@ struct Variant {
   bool checking = true;
   bool dropChecks = true;
   bool mustCapture = false;
+  bool mustCheck = false;
   bool mustDrop = false;
   PieceType mustDropType = ALL_PIECES;
   bool pieceDrops = false;
